@@ -24,23 +24,24 @@ public final class R {
         public static final int ic_launcher=0x7f020000;
     }
     public static final class id {
-        public static final int action_forgot_password=0x7f080010;
-        public static final int action_settings=0x7f08000f;
-        public static final int confirm_registration_button=0x7f08000e;
+        public static final int action_forgot_password=0x7f080011;
+        public static final int action_settings=0x7f080010;
+        public static final int confirm_registration_button=0x7f08000f;
         public static final int create_or_join_game_button=0x7f080003;
         public static final int day_night_freq_picker=0x7f080004;
         public static final int day_night_freq_text=0x7f080005;
         public static final int game_availability_text=0x7f080002;
         public static final int game_selection_text=0x7f080001;
-        public static final int login_button=0x7f080008;
-        public static final int password_input=0x7f080006;
-        public static final int reg_email=0x7f08000d;
-        public static final int reg_password=0x7f08000b;
-        public static final int reg_reenter_password=0x7f08000c;
-        public static final int reg_userid=0x7f08000a;
-        public static final int register_button=0x7f080009;
+        public static final int lobby_names_listview=0x7f080006;
+        public static final int login_button=0x7f080009;
+        public static final int password_input=0x7f080007;
+        public static final int reg_email=0x7f08000e;
+        public static final int reg_password=0x7f08000c;
+        public static final int reg_reenter_password=0x7f08000d;
+        public static final int reg_userid=0x7f08000b;
+        public static final int register_button=0x7f08000a;
         public static final int relative_layout_game_selection=0x7f080000;
-        public static final int userid_input=0x7f080007;
+        public static final int userid_input=0x7f080008;
     }
     public static final class layout {
         public static final int activity_game_start=0x7f030000;
