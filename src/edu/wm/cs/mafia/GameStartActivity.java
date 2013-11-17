@@ -49,7 +49,7 @@ public class GameStartActivity extends Activity {
 			@Override
 			public void onSuccess(String response){
 				if(response.equals("No games")){
-					intent.putExtra("isAdmin", true);
+					//intent.putExtra("isAdmin", true);
 					isAdmin_flag = 1;
 				}
 				else{
@@ -57,7 +57,7 @@ public class GameStartActivity extends Activity {
 					join_or_create_game_button.setText("Join Game");
 					day_night_freq.setVisibility(View.GONE);
 					day_night_freq_picker.setVisibility(View.GONE);
-					intent.putExtra("IsAdmin", false);
+					//intent.putExtra("isAdmin", false);
 					isAdmin_flag = 0;
 				}
 				glob_intent = intent;
@@ -115,9 +115,6 @@ public class GameStartActivity extends Activity {
 							}
 						});	
 					}
-				}
-				else{
-					Toast.makeText(context, "Player already registered", Toast.LENGTH_LONG).show();
 				}
 				progress.dismiss();
 			}
