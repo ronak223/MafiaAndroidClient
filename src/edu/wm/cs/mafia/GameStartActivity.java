@@ -22,6 +22,8 @@ public class GameStartActivity extends Activity {
 	Intent glob_intent;
 	int isAdmin_flag = 0;
 	NumberPicker day_night_freq_picker;
+	String glob_userID;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,8 +36,13 @@ public class GameStartActivity extends Activity {
 		day_night_freq_picker.setMaxValue(24);
 		day_night_freq_picker.setMinValue(1);
 		
+		//getting userID from previous intent to push to next activity
+		Intent prev_intent = getIntent();
+		glob_userID = prev_intent.getStringExtra("userID");
+		
 		//intent for AsyncTask
 		final Intent intent = new Intent(this, LobbyActivity.class);
+		intent.putExtra("userID", glob_userID);
 		
 		//loading spinner
 		final ProgressDialog progress = new ProgressDialog(this);
@@ -74,10 +81,12 @@ public class GameStartActivity extends Activity {
 	}
 
 	public void toLobby(View view){
-		//TODO configure web application to decide amount of werewolves and townspeople
+		//TODO disallow players to join if game is currently active
 		//getting userID from sharedPrefs
+		/*
 		SharedPreferences sp1=this.getSharedPreferences("Login",0);
 		final String userID = sp1.getString("UserID", null);
+		*/
 		
 		//app context to use in AsyncTask
 		final Context context = getApplicationContext();
@@ -93,16 +102,16 @@ public class GameStartActivity extends Activity {
     	progress.show();
     	
 		//first need to create player for either player. Location us default [0,0] and is updated on game start
-		client.get("http://mafia-web-service.herokuapp.com/createPlayer/" + userID + "/" + "0" + "/" + "0" + "/Townsperson", new AsyncHttpResponseHandler(){
+		client.get("http://mafia-web-service.herokuapp.com/createPlayer/" + glob_userID + "/" + "0" + "/" + "0" + "/Townsperson", new AsyncHttpResponseHandler(){
 			@Override
 			public void onSuccess(String response){
-				if(response.equals("Player for user " + userID + " registered.")){
-					Toast.makeText(context, "Player created for " + userID, Toast.LENGTH_SHORT).show();
+				if(response.equals("Player for user " + glob_userID + " registered.")){
+					Toast.makeText(context, "Player created for " + glob_userID, Toast.LENGTH_SHORT).show();
 					
 					if(isAdmin_flag == 1){
 						//setting up game. Will make associated player an admin for this game
 						int cycle_freq = day_night_freq_picker.getValue();
-						client.get("http://mafia-web-service.herokuapp.com/startGame/"+ userID +"/" + cycle_freq, new AsyncHttpResponseHandler() {
+						client.get("http://mafia-web-service.herokuapp.com/startGame/"+ glob_userID +"/" + cycle_freq, new AsyncHttpResponseHandler() {
 							@Override
 							public void onSuccess(String response){
 								if(response.equals("New game started successfully")){

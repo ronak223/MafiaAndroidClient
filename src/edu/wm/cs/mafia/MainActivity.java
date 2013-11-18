@@ -50,16 +50,19 @@ public class MainActivity extends Activity {
     	final Intent intent = new Intent(this, GameStartActivity.class);
     	
     	//instantiating SharedPreferences for use in forked thread
+    	/*
     	SharedPreferences sp = getSharedPreferences("Login", 0);
     	SharedPreferences.Editor ed = sp.edit();
     	ed.putString("UserID", user_id);
     	ed.commit();
+    	*/
     	
     	AsyncHttpClient client = new AsyncHttpClient();
     	client.get("http://mafia-web-service.herokuapp.com/login/" + user_id + "/" + pass, new AsyncHttpResponseHandler(){
     		@Override
     		public void onSuccess(String response){
     			if(response.equals("Logged in succesfully")){
+    				intent.putExtra("userID", user_id);
     				startActivity(intent);
     			}
     			else{
