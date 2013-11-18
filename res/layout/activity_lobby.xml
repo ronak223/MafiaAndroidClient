@@ -30,30 +30,30 @@
     </ListView>
 
     <Button
-        android:id="@+id/lobby_refresh_button"
+        android:id="@+id/lobby_begin_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lobby_names_listview"
         android:layout_centerHorizontal="true"
-        android:text="Refresh"
-        android:onClick="refreshPlayerList" />
+        android:onClick="beginNonAdmin"
+        android:text="BEGIN" />
 
     <Button
         android:id="@+id/lobby_start_game_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/lobby_refresh_button"
+        android:layout_below="@+id/lobby_begin_button"
         android:layout_centerHorizontal="true"
-        android:text="Start Game"
-        android:onClick="startGame" />
+        android:onClick="startGame"
+        android:text="Start Game" />
 
-    <Button
-        android:id="@+id/lobby_begin_button"
+    <TextView
+        android:id="@+id/lobby_please_wait_textview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/lobby_start_game_button"
-        android:layout_toRightOf="@+id/lobby_refresh_button"
-        android:onClick="beginNonAdmin"
-        android:text="BEGIN" />
+        android:layout_below="@+id/lobby_start_game_button"
+        android:layout_centerHorizontal="true"
+        android:text="Waiting for players...A button will appear once the game admin has initialized the game."
+        android:textColor="#EEEE99" />
 
 </RelativeLayout>

@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.json.parsers.JSONParser;
 import com.json.parsers.JsonParserFactory;
@@ -23,7 +24,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
 public class LobbyActivity extends Activity {
-	int isAdmin = 0;
+	int isAdmin = 1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +62,8 @@ public class LobbyActivity extends Activity {
 				}
 				else{
 					isAdmin = 1;
+					TextView help_text = (TextView)findViewById(R.id.lobby_please_wait_textview);
+					help_text.setText("Players will be listed as they join; press Start Game to initialize game.");
 				}
 				progress.dismiss();
 			}
@@ -81,29 +84,6 @@ public class LobbyActivity extends Activity {
 		//setting ListView to array of player userIDs that are currently queued up to play
 		final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(cur_context,android.R.layout.simple_list_item_1, player_name_list);
 		lv.setAdapter(arrayAdapter); 
-		/*
-		client.get("http://mafia-web-service.herokuapp.com/getAllPlayers", new AsyncHttpResponseHandler() {
-			@Override
-			public void onSuccess(String response){
-				Map jsonData=parser.parseJson(response);
-				Map rootJson= (Map) jsonData.get("root");
-				List al= (List) jsonData.get("response");
-				
-				for(int i = 0; i < al.size(); i++){
-					String userID=(String) ((Map)al.get(i)).get("userID");
-					player_name_list.add(userID);
-					
-				}
-				//setting ListView to array of player userIDs that are currently queued up to play
-				//ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(cur_context,android.R.layout.simple_list_item_1, player_name_list);
-				//lv.setAdapter(arrayAdapter); 
-				arrayAdapter.notifyDataSetChanged();
-				
-				//dismissing progress bar
-				progress.dismiss();
-			}
-		});	
-		*/
 		
 		//timer for updating player listview in lobby every 2 seconds automatically
 		final Timer timer_player_updater = new Timer();
@@ -170,48 +150,6 @@ public class LobbyActivity extends Activity {
 		return true;
 	}
 	
-	public void refreshPlayerList(View view){
-		//setting up JsonFactory
-    	JsonParserFactory factory=JsonParserFactory.getInstance();
-    	final JSONParser parser=factory.newJsonParser();
-    	
-    	//getting listView by resource ID, and context
-		final ListView lv = (ListView)findViewById(R.id.lobby_names_listview);
-		final Context cur_context = getApplicationContext();
-    	
-    	//loading spinner
-		final ProgressDialog progress = new ProgressDialog(this);
-    	progress.setTitle("Loading");
-    	progress.setMessage("Please wait...");
-    	progress.show();
-    	
-    	AsyncHttpClient client = new AsyncHttpClient();
-		client.setBasicAuth("specialkeythatnoonewilleverknow", "specialerpasswordisawesome");
-		client.get("http://mafia-web-service.herokuapp.com/getAllPlayers", new AsyncHttpResponseHandler() {
-			@Override
-			public void onSuccess(String response){
-				Map jsonData=parser.parseJson(response);
-				Map rootJson= (Map) jsonData.get("root");
-				List al= (List) jsonData.get("response");
-				
-				//initializing list for player names
-				ArrayList<String> player_name_list = new ArrayList<String>();
-				
-				for(int i = 0; i < al.size(); i++){
-					String userID=(String) ((Map)al.get(i)).get("userID");
-					player_name_list.add(userID);
-					
-				}
-				//setting ListView to array of player userIDs that are currently queued up to play
-				ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(cur_context,android.R.layout.simple_list_item_1, player_name_list);
-				lv.setAdapter(arrayAdapter); 
-				
-				//dismissing progress bar
-				progress.dismiss();
-			}
-		});	
-	}
-
 	public void startGame(View view){
 		//TODO need to send admin's coords from here to update
 		//loading spinner

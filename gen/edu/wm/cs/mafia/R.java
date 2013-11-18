@@ -32,9 +32,9 @@ public final class R {
         public static final int day_night_freq_text=0x7f080005;
         public static final int game_availability_text=0x7f080002;
         public static final int game_selection_text=0x7f080001;
-        public static final int lobby_begin_button=0x7f080009;
+        public static final int lobby_begin_button=0x7f080007;
         public static final int lobby_names_listview=0x7f080006;
-        public static final int lobby_refresh_button=0x7f080007;
+        public static final int lobby_please_wait_textview=0x7f080009;
         public static final int lobby_start_game_button=0x7f080008;
         public static final int login_button=0x7f08000c;
         public static final int password_input=0x7f08000a;
