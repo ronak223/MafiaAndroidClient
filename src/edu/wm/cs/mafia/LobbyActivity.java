@@ -10,13 +10,18 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.json.parsers.JSONParser;
 import com.json.parsers.JsonParserFactory;
@@ -25,6 +30,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 
 public class LobbyActivity extends Activity {
 	int isAdmin = 1;
+	String userID;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +53,7 @@ public class LobbyActivity extends Activity {
 		
 		//getting userID from intent
 		Intent intent = getIntent();
-		String userID = intent.getStringExtra("userID");
+		userID = intent.getStringExtra("userID");
 		
 		progress.show();
 		
@@ -159,7 +165,7 @@ public class LobbyActivity extends Activity {
     	progress.show();
     	
     	//TODO if WW, go to WW screen, else if TP, go to TP screen
-		AsyncHttpClient client = new AsyncHttpClient();
+		final AsyncHttpClient client = new AsyncHttpClient();
 		client.setBasicAuth("specialkeythatnoonewilleverknow", "specialerpasswordisawesome");
 		client.get("http://mafia-web-service.herokuapp.com/initGame", new AsyncHttpResponseHandler() {
 			@Override
@@ -169,12 +175,43 @@ public class LobbyActivity extends Activity {
 				progress.dismiss();
 			}
 		});	
+		
+		//updating location of admin user
+		updateLocation(client);
 	}
 	
 	//for button that appears on admin's StartGame
 	public void beginNonAdmin(View view){
-		//TODO send coordinate updates here for non-admins
+		final AsyncHttpClient client = new AsyncHttpClient();
+		client.setBasicAuth("specialkeythatnoonewilleverknow", "specialerpasswordisawesome");
+		
+		//updating location of non-admin user
+		updateLocation(client);
+		
+		
 		//TODO if WW, go to WW screen, else if TP, go to TP screen
 	}
-
+	
+	//for updating current user's location
+	public void updateLocation(AsyncHttpClient client){
+		LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		// Define a listener that responds to location updates
+		LocationListener locationListener = new LocationListener() {
+		    public void onLocationChanged(Location location) {
+		      // Called when a new location is found by the network location provider.
+		    }
+		    public void onStatusChanged(String provider, int status, Bundle extras) {}
+		    public void onProviderEnabled(String provider) {}
+		    public void onProviderDisabled(String provider) {}
+		  };
+		//updating DB with current coords
+		locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 500.0f, locationListener);
+		Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		client.get("http://mafia-web-service.herokuapp.com/updateLocation/" + userID + "/" + location.getLatitude() + "/" + location.getLongitude(), new AsyncHttpResponseHandler() {
+			@Override
+			public void onSuccess(String response){
+				Log.v("location update", response);
+			}
+		});	
+	}
 }

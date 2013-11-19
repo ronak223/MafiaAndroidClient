@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
@@ -81,12 +81,8 @@ public class GameStartActivity extends Activity {
 	}
 
 	public void toLobby(View view){
-		//TODO disallow players to join if game is currently active
+		//TODO disallow players to join if game is currently active, but if player exists for current userID, then go straight past lobby activity to WW/TP screen
 		//getting userID from sharedPrefs
-		/*
-		SharedPreferences sp1=this.getSharedPreferences("Login",0);
-		final String userID = sp1.getString("UserID", null);
-		*/
 		
 		//app context to use in AsyncTask
 		final Context context = getApplicationContext();
@@ -128,6 +124,20 @@ public class GameStartActivity extends Activity {
 				progress.dismiss();
 			}
 		});
-		startActivity(glob_intent);
+		
+		client.get("http://mafia-web-service.herokuapp.com/isGameActive", new AsyncHttpResponseHandler(){
+			@Override
+			public void onSuccess(String response){
+				if(response.equals("true")){
+					Toast toast= Toast.makeText(getApplicationContext(), 
+							"Game is already active; Please wait until current game has been completed.", Toast.LENGTH_LONG);  
+							toast.setGravity(Gravity.TOP|Gravity.CENTER_HORIZONTAL, 0, 0);
+							toast.show();
+				}
+				else{
+					startActivity(glob_intent);
+				}
+			}
+		});
 	}
 }
