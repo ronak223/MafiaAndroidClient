@@ -157,7 +157,6 @@ public class LobbyActivity extends Activity {
 	}
 	
 	public void startGame(View view){
-		//TODO need to send admin's coords from here to update
 		//loading spinner
 		final ProgressDialog progress = new ProgressDialog(this);
     	progress.setTitle("Loading");
@@ -171,7 +170,7 @@ public class LobbyActivity extends Activity {
 			@Override
 			public void onSuccess(String response){
 				//dismissing progress bar
-				//if true, then we good, else false, not enough players
+				//TODO if true, then we good, else false, not enough players
 				progress.dismiss();
 			}
 		});	
@@ -187,6 +186,9 @@ public class LobbyActivity extends Activity {
 		
 		//updating location of non-admin user
 		updateLocation(client);
+		
+		Intent intent = new Intent(this, WerewolfActivity.class);
+		startActivity(intent);
 		
 		
 		//TODO if WW, go to WW screen, else if TP, go to TP screen
@@ -210,7 +212,6 @@ public class LobbyActivity extends Activity {
 		client.get("http://mafia-web-service.herokuapp.com/updateLocation/" + userID + "/" + location.getLatitude() + "/" + location.getLongitude(), new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(String response){
-				Log.v("location update", response);
 			}
 		});	
 	}

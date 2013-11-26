@@ -7,5 +7,9 @@
     <string name="title_activity_registration">RegistrationActivity</string>
     <string name="title_activity_game_start">GameStartActivity</string>
     <string name="title_activity_lobby">LobbyActivity</string>
+    <string name="title_activity_werewolf">WerewolfActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
 
 </resources>

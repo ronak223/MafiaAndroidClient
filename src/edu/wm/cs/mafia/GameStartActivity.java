@@ -81,9 +81,6 @@ public class GameStartActivity extends Activity {
 	}
 
 	public void toLobby(View view){
-		//TODO disallow players to join if game is currently active, but if player exists for current userID, then go straight past lobby activity to WW/TP screen
-		//getting userID from sharedPrefs
-		
 		//app context to use in AsyncTask
 		final Context context = getApplicationContext();
 		

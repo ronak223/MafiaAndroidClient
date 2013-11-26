@@ -8,7 +8,9 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -49,21 +51,29 @@ public class MainActivity extends Activity {
     	//setting up intent for login
     	final Intent intent = new Intent(this, GameStartActivity.class);
     	
-    	//instantiating SharedPreferences for use in forked thread
-    	/*
-    	SharedPreferences sp = getSharedPreferences("Login", 0);
-    	SharedPreferences.Editor ed = sp.edit();
-    	ed.putString("UserID", user_id);
-    	ed.commit();
-    	*/
+    	//setting up intent for when currently active player re-logs in
+    	final Intent intent2 = new Intent(this, LobbyActivity.class);
     	
-    	AsyncHttpClient client = new AsyncHttpClient();
+    	final AsyncHttpClient client = new AsyncHttpClient();
     	client.get("http://mafia-web-service.herokuapp.com/login/" + user_id + "/" + pass, new AsyncHttpResponseHandler(){
     		@Override
     		public void onSuccess(String response){
     			if(response.equals("Logged in succesfully")){
-    				intent.putExtra("userID", user_id);
-    				startActivity(intent);
+    				client.setBasicAuth("specialkeythatnoonewilleverknow", "specialerpasswordisawesome");
+    				client.get("http://mafia-web-service.herokuapp.com/doesPlayerExist/" + user_id , new AsyncHttpResponseHandler() {
+    					@Override
+    					public void onSuccess(String response){
+    						if(response.equals("true")){
+    							intent2.putExtra("userID", user_id);
+    							startActivity(intent2);
+    						}
+    						else{
+    							intent.putExtra("userID", user_id);
+    		    				startActivity(intent);
+    						}
+    						progress.dismiss();
+    					}
+    				});	
     			}
     			else{
     				EditText user_id_box = (EditText)findViewById(R.id.userid_input);
@@ -72,10 +82,11 @@ public class MainActivity extends Activity {
     	    		user_id_box.setText("");
     	    		user_pass_box.setText("");
     	    		
+    	    		progress.dismiss();
+    	    		
     	    		Toast toast = Toast.makeText(context, text, duration);
     	    		toast.show();
     			}
-    			progress.dismiss();
     		}
     	});
     }
