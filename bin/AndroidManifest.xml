@@ -47,6 +47,10 @@
             android:name="edu.wm.cs.mafia.WerewolfActivity"
             android:label="@string/title_activity_werewolf" >
         </activity>
+        <activity
+            android:name="edu.wm.cs.mafia.TownspersonActivity"
+            android:label="@string/title_activity_townsperson" >
+        </activity>
     </application>
 
 </manifest>

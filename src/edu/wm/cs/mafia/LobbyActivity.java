@@ -162,8 +162,7 @@ public class LobbyActivity extends Activity {
     	progress.setTitle("Loading");
     	progress.setMessage("Please wait...");
     	progress.show();
-    	
-    	//TODO if WW, go to WW screen, else if TP, go to TP screen
+
 		final AsyncHttpClient client = new AsyncHttpClient();
 		client.setBasicAuth("specialkeythatnoonewilleverknow", "specialerpasswordisawesome");
 		client.get("http://mafia-web-service.herokuapp.com/initGame", new AsyncHttpResponseHandler() {
@@ -171,16 +170,50 @@ public class LobbyActivity extends Activity {
 			public void onSuccess(String response){
 				//dismissing progress bar
 				//TODO if true, then we good, else false, not enough players
-				progress.dismiss();
+				
 			}
 		});	
 		
-		//updating location of admin user
-		updateLocation(client);
-		Intent intent = new Intent(this, WerewolfActivity.class);
-		intent.putExtra("userID", userID);
-		intent.putExtra("num_players", num_players);
-		startActivity(intent);
+		//setting up JsonFactory
+    	JsonParserFactory factory=JsonParserFactory.getInstance();
+    	final JSONParser parser=factory.newJsonParser();
+    	
+    	//context for intent
+    	final Context cur_ctx = getApplicationContext();
+		
+		client.get("http://mafia-web-service.herokuapp.com/getPlayer/" + userID, new AsyncHttpResponseHandler() {
+			@Override
+			public void onSuccess(String response){
+				if(response.equals("false")){
+					
+				}
+				else{
+					Map jsonData = parser.parseJson(response);
+					Map rootJson = (Map)jsonData.get("root");
+					String cur_alignment = (String) jsonData.get("alignment");
+
+					//updating location of admin user
+					updateLocation(client);
+					
+					if(cur_alignment.equals("Werewolf")){
+						Intent intent = new Intent(cur_ctx, WerewolfActivity.class);
+						intent.putExtra("userID", userID);
+						intent.putExtra("num_players", num_players);
+						startActivity(intent);
+					}
+					else if(cur_alignment.equals("Townsperson")){
+						Intent intent = new Intent(cur_ctx, TownspersonActivity.class);
+						intent.putExtra("userID", userID);
+						intent.putExtra("num_players", num_players);
+						startActivity(intent);
+					}
+				}
+				progress.dismiss();
+			}
+		});
+		
+		
+		
 	}
 	
 	//for button that appears on admin's StartGame
@@ -188,16 +221,49 @@ public class LobbyActivity extends Activity {
 		final AsyncHttpClient client = new AsyncHttpClient();
 		client.setBasicAuth("specialkeythatnoonewilleverknow", "specialerpasswordisawesome");
 		
-		//updating location of non-admin user
-		updateLocation(client);
-		
-		Intent intent = new Intent(this, WerewolfActivity.class);
-		intent.putExtra("num_players", num_players);
-		intent.putExtra("userID", userID);
-		startActivity(intent);
-		
-		
-		//TODO if WW, go to WW screen, else if TP, go to TP screen
+		//setting up JsonFactory
+    	JsonParserFactory factory=JsonParserFactory.getInstance();
+    	final JSONParser parser=factory.newJsonParser();
+    	
+    	//context for intent
+    	final Context cur_ctx = getApplicationContext();
+    	
+    	//init progress bar
+		final ProgressDialog progress = new ProgressDialog(this);
+    	progress.setTitle("Loading");
+    	progress.setMessage("Please wait...");
+    	progress.show();
+    	
+		client.get("http://mafia-web-service.herokuapp.com/getPlayer/" + userID, new AsyncHttpResponseHandler() {
+			@Override
+			public void onSuccess(String response){
+				if(response.equals("false")){
+					
+				}
+				else{
+					Map jsonData = parser.parseJson(response);
+					Map rootJson = (Map)jsonData.get("root");
+					String cur_alignment = (String) jsonData.get("alignment");
+
+					//updating location of admin user
+					updateLocation(client);
+					
+					if(cur_alignment.equals("Werewolf")){
+						Intent intent = new Intent(cur_ctx, WerewolfActivity.class);
+						intent.putExtra("userID", userID);
+						intent.putExtra("num_players", num_players);
+						startActivity(intent);
+					}
+					else if(cur_alignment.equals("Townsperson")){
+						Intent intent = new Intent(cur_ctx, TownspersonActivity.class);
+						intent.putExtra("userID", userID);
+						intent.putExtra("num_players", num_players);
+						startActivity(intent);
+					}
+				}
+				progress.dismiss();
+			}
+		});
 	}
 	
 	//for updating current user's location
