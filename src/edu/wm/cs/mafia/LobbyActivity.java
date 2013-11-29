@@ -21,7 +21,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.json.parsers.JSONParser;
 import com.json.parsers.JsonParserFactory;
@@ -31,6 +30,7 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 public class LobbyActivity extends Activity {
 	int isAdmin = 1;
 	String userID;
+	int num_players = 0;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -111,9 +111,9 @@ public class LobbyActivity extends Activity {
 							player_name_list.add(userID);
 							
 						}
+						
+						num_players = player_name_list.size();
 						//setting ListView to array of player userIDs that are currently queued up to play
-						//ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(cur_context,android.R.layout.simple_list_item_1, player_name_list);
-						//lv.setAdapter(arrayAdapter); 
 						runOnUiThread(new Runnable() {
 						     public void run() {
 						    	 arrayAdapter.notifyDataSetChanged();
@@ -177,6 +177,10 @@ public class LobbyActivity extends Activity {
 		
 		//updating location of admin user
 		updateLocation(client);
+		Intent intent = new Intent(this, WerewolfActivity.class);
+		intent.putExtra("userID", userID);
+		intent.putExtra("num_players", num_players);
+		startActivity(intent);
 	}
 	
 	//for button that appears on admin's StartGame
@@ -188,6 +192,8 @@ public class LobbyActivity extends Activity {
 		updateLocation(client);
 		
 		Intent intent = new Intent(this, WerewolfActivity.class);
+		intent.putExtra("num_players", num_players);
+		intent.putExtra("userID", userID);
 		startActivity(intent);
 		
 		
@@ -196,7 +202,9 @@ public class LobbyActivity extends Activity {
 	
 	//for updating current user's location
 	public void updateLocation(AsyncHttpClient client){
-		LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		/*LocationManager locManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+		 */
+		 
 		// Define a listener that responds to location updates
 		LocationListener locationListener = new LocationListener() {
 		    public void onLocationChanged(Location location) {
@@ -206,13 +214,85 @@ public class LobbyActivity extends Activity {
 		    public void onProviderEnabled(String provider) {}
 		    public void onProviderDisabled(String provider) {}
 		  };
+		  
 		//updating DB with current coords
+		/*
 		locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L, 500.0f, locationListener);
 		Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		*/
+		Location location = getLocation(locationListener);
+		Log.v("Loc", "" + location.getLatitude());
 		client.get("http://mafia-web-service.herokuapp.com/updateLocation/" + userID + "/" + location.getLatitude() + "/" + location.getLongitude(), new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(String response){
 			}
 		});	
+	}
+	
+	
+	LocationManager locationManager;
+	boolean isGPSEnabled;
+	boolean isNetworkEnabled;
+	boolean canGetLocation;
+	Location cur_location;
+	double cur_latitude;
+	double cur_longitude;
+	
+	public Location getLocation(LocationListener loc_listener) {
+	    try {
+	        locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+
+	        // getting GPS status
+	        isGPSEnabled = locationManager
+	                .isProviderEnabled(LocationManager.GPS_PROVIDER);
+
+	        // getting network status
+	        isNetworkEnabled = locationManager
+	                .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+	        if (!isGPSEnabled && !isNetworkEnabled) {
+	            // no network provider is enabled
+	        } else {
+	            this.canGetLocation = true;
+	            if (isNetworkEnabled) {
+	                locationManager.requestLocationUpdates(
+	                        LocationManager.NETWORK_PROVIDER,
+	                        1000L,
+	                        50.0f,  loc_listener);
+	                Log.d("Network", "Network Enabled");
+	                if (locationManager != null) {
+	                    cur_location = locationManager
+	                            .getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+	                    if (cur_location != null) {
+	                        cur_latitude = cur_location.getLatitude();
+	                        cur_longitude = cur_location.getLongitude();
+	                    }
+	                }
+	            }
+	            // if GPS Enabled get lat/long using GPS Services
+	            if (isGPSEnabled) {
+	                if (cur_location == null) {
+	                    locationManager.requestLocationUpdates(
+	                            LocationManager.GPS_PROVIDER,
+	                            1000L,
+	                            50.0f, loc_listener);
+	                    Log.d("GPS", "GPS Enabled");
+	                    if (locationManager != null) {
+	                        cur_location = locationManager
+	                                .getLastKnownLocation(LocationManager.GPS_PROVIDER);
+	                        if (cur_location != null) {
+	                            cur_latitude = cur_location.getLatitude();
+	                            cur_longitude = cur_location.getLongitude();
+	                        }
+	                    }
+	                }
+	            }
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return cur_location;
 	}
 }

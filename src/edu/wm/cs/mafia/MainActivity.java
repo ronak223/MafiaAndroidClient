@@ -58,7 +58,7 @@ public class MainActivity extends Activity {
     	client.get("http://mafia-web-service.herokuapp.com/login/" + user_id + "/" + pass, new AsyncHttpResponseHandler(){
     		@Override
     		public void onSuccess(String response){
-    			if(response.equals("Logged in succesfully")){
+    			if(response.equals("Logged in successfully")){
     				client.setBasicAuth("specialkeythatnoonewilleverknow", "specialerpasswordisawesome");
     				client.get("http://mafia-web-service.herokuapp.com/doesPlayerExist/" + user_id , new AsyncHttpResponseHandler() {
     					@Override
