@@ -246,7 +246,7 @@ public class LobbyActivity extends Activity {
 					String cur_alignment = (String) jsonData.get("alignment");
 
 					//updating location of admin user
-					updateLocation(client);
+					//updateLocation(client);
 					
 					if(cur_alignment.equals("Werewolf")){
 						Intent intent = new Intent(cur_ctx, WerewolfActivity.class);
@@ -287,7 +287,7 @@ public class LobbyActivity extends Activity {
 		Location location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		*/
 		Location location = getLocation(locationListener);
-		Log.v("Loc", "" + location.getLatitude());
+
 		client.get("http://mafia-web-service.herokuapp.com/updateLocation/" + userID + "/" + location.getLatitude() + "/" + location.getLongitude(), new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(String response){
