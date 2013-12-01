@@ -1,13 +1,14 @@
 package edu.wm.cs.mafia;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
@@ -114,6 +115,46 @@ public class TownspersonActivity extends Activity {
 			}
 		}, 100, 2000);
 		
+		final Context cur_ctx = getApplicationContext();
+		
+		//timer checking if game is over (when no werewolves or TP are left)
+		final Timer game_ending_timer = new Timer();
+		game_ending_timer.scheduleAtFixedRate(new TimerTask(){
+			
+			@Override
+			public void run(){
+				client.get("http://mafia-web-service.herokuapp.com/getAllPlayers", new AsyncHttpResponseHandler() {
+					@Override
+					public void onSuccess(String response){
+						Map jsonData=parser.parseJson(response);
+						Map rootJson= (Map) jsonData.get("root");
+						List al= (List) jsonData.get("response");
+						
+						int num_werewolves = 0;
+						int num_townspeople = 0;
+						
+						for(int i = 0; i < al.size(); i++){
+							String alignment = (String) ((Map)al.get(i)).get("alignment");
+							if(alignment.equals("Werewolf")){
+								num_werewolves++;
+							}
+							else if(alignment.equals("Townsperson")){
+								num_townspeople++;
+							}
+						}
+						
+						if(num_werewolves == 0 || num_townspeople == 0){
+							Intent intent = new Intent(cur_ctx, GameEndingActivity.class);
+							intent.putExtra("userID", userID);
+							startActivity(intent);
+							game_ending_timer.cancel();
+							dead_timer.cancel();
+							day_night_timer.cancel();
+						}
+					}
+				});	
+			}
+		}, 400, 60000);
 		
 		//TODO constantly update position
 		//TODO timer for checking if game is over, then moving to summary screen

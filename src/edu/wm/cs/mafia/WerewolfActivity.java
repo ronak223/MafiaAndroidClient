@@ -202,6 +202,46 @@ public class WerewolfActivity extends Activity {
 			}
 		}, 0, 60000);
 		
+		//timer to check if game has ended (when there are no Werewolves or TP)
+		final Timer game_ending_timer = new Timer();
+		game_ending_timer.scheduleAtFixedRate(new TimerTask(){
+			
+			@Override
+			public void run(){
+				client.get("http://mafia-web-service.herokuapp.com/getAllPlayers", new AsyncHttpResponseHandler() {
+					@Override
+					public void onSuccess(String response){
+						Map jsonData=parser.parseJson(response);
+						Map rootJson= (Map) jsonData.get("root");
+						List al= (List) jsonData.get("response");
+						
+						int num_werewolves = 0;
+						int num_townspeople = 0;
+						
+						for(int i = 0; i < al.size(); i++){
+							String alignment = (String) ((Map)al.get(i)).get("alignment");
+							if(alignment.equals("Werewolf")){
+								num_werewolves++;
+							}
+							else if(alignment.equals("Townsperson")){
+								num_townspeople++;
+							}
+						}
+						
+						if(num_werewolves == 0 || num_townspeople == 0){
+							Intent intent = new Intent(cur_context, GameEndingActivity.class);
+							intent.putExtra("userID", userID);
+							startActivity(intent);
+							game_ending_timer.cancel();
+							timer.cancel();
+							timer2.cancel();
+							timer3.cancel();
+						}
+					}
+				});	
+			}
+		}, 400, 60000);
+		
 		//TODO constantly update position
 		//==========================================================================================================
 		
