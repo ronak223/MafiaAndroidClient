@@ -28,7 +28,7 @@
     </ListView>
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/tp_day_night_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/werewolf_kill_list"

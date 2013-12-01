@@ -145,8 +145,6 @@ public class LobbyActivity extends Activity {
 				});	
 			}
 		}, 0, 2000);
-		
-		//TODO allow only ADMIN to restart game frequency here; once game is started, it is set
 	}
 
 	@Override

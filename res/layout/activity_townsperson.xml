@@ -9,8 +9,33 @@
     tools:context=".TownspersonActivity" >
 
     <TextView
+        android:id="@+id/tp_day_night_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="It is currently DAY."
+        android:textColor="#9900FF"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/tp_caution_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tp_day_night_text"
+        android:layout_centerHorizontal="true"
+        android:text="You are safe...for now."
+        android:textColor="#000000" />
+
+    <TextView
+        android:id="@+id/tp_dead_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tp_caution_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="145dp"
+        android:text="YOU HAVE BEEN KILLED!"
+        android:textColor="#FF0000"
+        android:textSize="40sp" />
 
 </RelativeLayout>
