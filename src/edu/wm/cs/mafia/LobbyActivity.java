@@ -166,8 +166,6 @@ public class LobbyActivity extends Activity {
 		client.get("http://mafia-web-service.herokuapp.com/initGame", new AsyncHttpResponseHandler() {
 			@Override
 			public void onSuccess(String response){
-				//dismissing progress bar
-				//TODO if true, then we good, else false, not enough players
 				
 			}
 		});	

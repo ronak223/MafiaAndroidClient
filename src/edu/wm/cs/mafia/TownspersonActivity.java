@@ -29,9 +29,6 @@ public class TownspersonActivity extends Activity {
 	String userID;
 	int num_players;
 	
-	//0 indicated that it is the first day cycle, 1 indicates it is not
-	int first_day_cycle = 0;
-	
 	int day_night_cycle = 0;
 	
 	//0 is false, 1 is true
@@ -70,12 +67,11 @@ public class TownspersonActivity extends Activity {
 					@Override
 					public void onSuccess(String response){
 						if(response.equals("night")){
-							if(day_night_cycle == 0 && first_day_cycle == 1){
+							if(day_night_cycle == 0){
 								Intent voting_intent = new Intent(cur_ctx, VotingActivity.class);
 								voting_intent.putExtra("userID", userID);
 								startActivity(voting_intent);
 							}
-							first_day_cycle = 1;
 							day_night_cycle = 1;
 							runOnUiThread(new Runnable() {
 							     public void run() {
