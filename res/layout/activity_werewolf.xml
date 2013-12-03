@@ -10,7 +10,7 @@
     tools:context=".WerewolfActivity" >
 
     <TextView
-        android:id="@+id/TextView01"
+        android:id="@+id/TextView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/werewolf_scent_list"
@@ -23,7 +23,7 @@
         android:id="@+id/werewolf_kill_list"
         android:layout_width="match_parent"
         android:layout_height="600dp"
-        android:layout_alignLeft="@+id/TextView01"
+        android:layout_alignLeft="@+id/TextView3"
         android:layout_alignTop="@+id/werewolf_scent_list" >
     </ListView>
 
@@ -51,8 +51,8 @@
         android:id="@+id/game_selection_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/TextView01"
-        android:layout_alignBottom="@+id/TextView01"
+        android:layout_alignBaseline="@+id/TextView3"
+        android:layout_alignBottom="@+id/TextView3"
         android:layout_alignParentLeft="true"
         android:text="I can smell..."
         android:textColor="#E80000"

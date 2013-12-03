@@ -159,6 +159,13 @@ public class TownspersonActivity extends Activity {
 						if(num_werewolves == 0 || num_townspeople == 0){
 							Intent intent = new Intent(cur_ctx, GameEndingActivity.class);
 							intent.putExtra("userID", userID);
+							if(num_werewolves == 0){
+								intent.putExtra("winning_team", "Townspeople");
+							}
+							else if(num_townspeople == 0){
+								intent.putExtra("winning_team", "Werewolves");
+							}
+							
 							startActivity(intent);
 							game_ending_timer.cancel();
 							dead_timer.cancel();
@@ -168,8 +175,6 @@ public class TownspersonActivity extends Activity {
 				});	
 			}
 		}, 400, 2000);
-		
-		//TODO voting screen for both werewolves and townspeople every morning
 	}
 
 	@Override

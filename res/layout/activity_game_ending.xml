@@ -2,6 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#000000"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
@@ -9,8 +10,120 @@
     tools:context=".GameEndingActivity" >
 
     <TextView
+        android:id="@+id/game_over_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="GAME OVER"
+        android:textColor="#E80000"
+        android:textSize="50sp" />
+
+    <TextView
+        android:id="@+id/game_summary_title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/game_over_text"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="21dp"
+        android:text="Game Summary"
+        android:textColor="#FFFFFF"
+        android:textSize="26sp" />
+
+    <TextView
+        android:id="@+id/winning_team_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="23dp"
+        android:text="Winning team is...."
+        android:textColor="#FFFFFF"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/TextView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/highest_points_text"
+        android:layout_below="@+id/highest_points_text"
+        android:layout_marginTop="54dp"
+        android:text="Total Kills:"
+        android:textColor="#FF6633"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/total_kills_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/TextView3"
+        android:layout_below="@+id/TextView3"
+        android:layout_marginTop="31dp"
+        android:text="Total number of kills..."
+        android:textColor="#FFFFFF"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/game_summary_title_text"
+        android:layout_marginTop="39dp"
+        android:text="Winning Team:"
+        android:textColor="#FF6633"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/highest_points_text"
+        android:layout_alignLeft="@+id/winning_team_text"
+        android:layout_marginBottom="42dp"
+        android:text="Highest Points:"
+        android:textColor="#FF6633"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/highest_points_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView2"
+        android:layout_alignRight="@+id/winning_team_text"
+        android:layout_centerVertical="true"
+        android:text="Player with highest points..."
+        android:textColor="#FFFFFF"
+        android:textSize="28sp" />
+
+    <ListView
+        android:id="@+id/alive_player_summary_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/total_kills_text"
+        android:layout_alignTop="@+id/winning_team_text"
+        android:layout_toRightOf="@+id/game_over_text" >
+
+    </ListView>
+
+    <TextView
+        android:id="@+id/TextView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/winning_team_text"
+        android:layout_alignParentRight="true"
+        android:text="Alive Players:"
+        android:textColor="#FF6633"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/complete_game_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="89dp"
+        android:text="Conclude Game"
+        android:onClick="concludeGame" />
 
 </RelativeLayout>

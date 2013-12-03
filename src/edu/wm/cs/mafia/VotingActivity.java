@@ -5,7 +5,7 @@ import android.app.Activity;
 import android.view.Menu;
 
 public class VotingActivity extends Activity {
-
+	//TODO implement all votey stuffz
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
