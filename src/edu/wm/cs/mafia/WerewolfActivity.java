@@ -7,13 +7,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.DialogFragment;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentSender;
-import android.content.SharedPreferences;
-import android.location.Location;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -25,14 +22,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
 import com.json.parsers.JSONParser;
 import com.json.parsers.JsonParserFactory;
+import com.littlefluffytoys.littlefluffylocationlibrary.LocationInfo;
+import com.littlefluffytoys.littlefluffylocationlibrary.LocationLibraryConstants;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -243,6 +236,10 @@ public class WerewolfActivity extends Activity {
 		}, 400, 60000);
 		
 		//TODO constantly update position
+		//LocationLibrary.forceLocationUpdate(WerewolfActivity.this);
+        //Toast.makeText(getApplicationContext(), "Forcing a location update", Toast.LENGTH_SHORT).show();
+		
+		//TODO voting screen for both werewolves and townspeople every morning
 		//==========================================================================================================
 		
         
@@ -256,17 +253,56 @@ public class WerewolfActivity extends Activity {
 		return true;
 	}
 	
-	//for updating current user's location
-	public void updateLocation(Location location){
+	@Override
+    public void onResume() {
+        super.onResume();
+
+        refreshLocation();
+
+        // This demonstrates how to dynamically create a receiver to listen to the location updates.
+        // You could also register a receiver in your manifest.
+        final IntentFilter lftIntentFilter = new IntentFilter(LocationLibraryConstants.getLocationChangedPeriodicBroadcastAction());
+        registerReceiver(lftBroadcastReceiver, lftIntentFilter);
+   }
+	
+	@Override
+    public void onPause() {
+        super.onPause();
+        
+        unregisterReceiver(lftBroadcastReceiver);
+   }
+	
+	private void refreshLocation(){
+		refreshLocation(new LocationInfo(this));
+	}
+	
+	private void refreshLocation(final LocationInfo locationInfo){
 		//init Async client for web service access
     	final AsyncHttpClient client2 = new AsyncHttpClient();
 		client2.setBasicAuth("specialkeythatnoonewilleverknow", "specialerpasswordisawesome");
+
+		if(locationInfo.anyLocationDataReceived()){
+			client2.get("http://mafia-web-service.herokuapp.com/updateLocation/" + userID + "/" + Float.toString(locationInfo.lastLat) + "/" + Float.toString(locationInfo.lastLong), new AsyncHttpResponseHandler() {
+				@Override
+				public void onSuccess(String response){
+				}
+			});	
+			if (locationInfo.hasLatestDataBeenBroadcast()) {
+                Log.v("refreshLocation", "Latest location has been broadcast");
+            }
+		}
 		
-		client2.get("http://mafia-web-service.herokuapp.com/updateLocation/" + userID + "/" + location.getLatitude() + "/" + location.getLongitude(), new AsyncHttpResponseHandler() {
-			@Override
-			public void onSuccess(String response){
-			}
-		});	
 	}
+	
+	private final BroadcastReceiver lftBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+        	//Toast.makeText(getApplicationContext(), "In Broadcast Receiver", Toast.LENGTH_LONG).show();
+            // extract the location info in the broadcast
+            final LocationInfo locationInfo = (LocationInfo) intent.getSerializableExtra(LocationLibraryConstants.LOCATION_BROADCAST_EXTRA_LOCATIONINFO);
+            // refresh the display with it
+            refreshLocation(locationInfo);
+        }
+    };
 
 }
