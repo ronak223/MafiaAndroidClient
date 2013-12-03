@@ -128,7 +128,7 @@ public class TownspersonActivity extends Activity {
 			
 			@Override
 			public void run(){
-				client.get("http://mafia-web-service.herokuapp.com/getAllPlayers", new AsyncHttpResponseHandler() {
+				client.get("http://mafia-web-service.herokuapp.com/getAllAlivePlayers", new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response){
 						Map jsonData=parser.parseJson(response);
@@ -159,9 +159,8 @@ public class TownspersonActivity extends Activity {
 					}
 				});	
 			}
-		}, 400, 60000);
+		}, 400, 2000);
 		
-		//TODO timer for checking if game is over, then moving to summary screen
 		//TODO voting screen for both werewolves and townspeople every morning
 	}
 

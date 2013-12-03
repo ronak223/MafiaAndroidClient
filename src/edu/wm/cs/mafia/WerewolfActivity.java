@@ -201,7 +201,7 @@ public class WerewolfActivity extends Activity {
 			
 			@Override
 			public void run(){
-				client.get("http://mafia-web-service.herokuapp.com/getAllPlayers", new AsyncHttpResponseHandler() {
+				client.get("http://mafia-web-service.herokuapp.com/getAllAlivePlayers", new AsyncHttpResponseHandler() {
 					@Override
 					public void onSuccess(String response){
 						Map jsonData=parser.parseJson(response);
@@ -233,11 +233,7 @@ public class WerewolfActivity extends Activity {
 					}
 				});	
 			}
-		}, 400, 60000);
-		
-		//TODO constantly update position
-		//LocationLibrary.forceLocationUpdate(WerewolfActivity.this);
-        //Toast.makeText(getApplicationContext(), "Forcing a location update", Toast.LENGTH_SHORT).show();
+		}, 400, 2000);
 		
 		//TODO voting screen for both werewolves and townspeople every morning
 		//==========================================================================================================
