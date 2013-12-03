@@ -29,6 +29,11 @@ public class TownspersonActivity extends Activity {
 	String userID;
 	int num_players;
 	
+	//0 indicated that it is the first day cycle, 1 indicates it is not
+	int first_day_cycle = 0;
+	
+	int day_night_cycle = 0;
+	
 	//0 is false, 1 is true
 	int isDeadFlag = 0;
 	
@@ -36,6 +41,9 @@ public class TownspersonActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_townsperson);
+		
+		//getting app context
+		final Context cur_ctx = getApplicationContext();
 		
 		//getting current userID and number of players
 		Intent intent = getIntent();
@@ -62,7 +70,13 @@ public class TownspersonActivity extends Activity {
 					@Override
 					public void onSuccess(String response){
 						if(response.equals("night")){
-							
+							if(day_night_cycle == 0 && first_day_cycle == 1){
+								Intent voting_intent = new Intent(cur_ctx, VotingActivity.class);
+								voting_intent.putExtra("userID", userID);
+								startActivity(voting_intent);
+							}
+							first_day_cycle = 1;
+							day_night_cycle = 1;
 							runOnUiThread(new Runnable() {
 							     public void run() {
 							    	 day_night_text.setText("It is currently NIGHT.");
@@ -71,7 +85,7 @@ public class TownspersonActivity extends Activity {
 							});
 						}
 						else if(response.equals("day")){
-
+							day_night_cycle = 0;
 							runOnUiThread(new Runnable() {
 							     public void run() {
 							    	 day_night_text.setText("It is currently DAY.");
@@ -119,8 +133,6 @@ public class TownspersonActivity extends Activity {
 				});	
 			}
 		}, 100, 2000);
-		
-		final Context cur_ctx = getApplicationContext();
 		
 		//timer checking if game is over (when no werewolves or TP are left)
 		final Timer game_ending_timer = new Timer();

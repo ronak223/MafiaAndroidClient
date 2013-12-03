@@ -252,7 +252,8 @@ containing a value of this type.
         public static final int activity_main=0x7f030003;
         public static final int activity_registration=0x7f030004;
         public static final int activity_townsperson=0x7f030005;
-        public static final int activity_werewolf=0x7f030006;
+        public static final int activity_voting=0x7f030006;
+        public static final int activity_werewolf=0x7f030007;
     }
     public static final class menu {
         public static final int game_ending=0x7f0a0000;
@@ -262,13 +263,14 @@ containing a value of this type.
         public static final int register=0x7f0a0004;
         public static final int registration=0x7f0a0005;
         public static final int townsperson=0x7f0a0006;
-        public static final int werewolf=0x7f0a0007;
+        public static final int voting=0x7f0a0007;
+        public static final int werewolf=0x7f0a0008;
     }
     public static final class string {
-        public static final int action_forgot_password=0x7f06002b;
+        public static final int action_forgot_password=0x7f06002c;
         public static final int action_settings=0x7f06001b;
-        public static final int action_sign_in_register=0x7f060029;
-        public static final int action_sign_in_short=0x7f06002a;
+        public static final int action_sign_in_register=0x7f06002a;
+        public static final int action_sign_in_short=0x7f06002b;
         public static final int app_name=0x7f06001a;
         /**   Title for notification shown when GooglePlayServices needs to be
         enabled for a application to work. [CHAR LIMIT=70] 
@@ -364,22 +366,23 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f060013;
-        public static final int error_field_required=0x7f060030;
-        public static final int error_incorrect_password=0x7f06002f;
-        public static final int error_invalid_email=0x7f06002d;
-        public static final int error_invalid_password=0x7f06002e;
+        public static final int error_field_required=0x7f060031;
+        public static final int error_incorrect_password=0x7f060030;
+        public static final int error_invalid_email=0x7f06002e;
+        public static final int error_invalid_password=0x7f06002f;
         public static final int hello_world=0x7f06001c;
-        public static final int login_progress_signing_in=0x7f06002c;
+        public static final int login_progress_signing_in=0x7f06002d;
         /**  Strings related to login 
          */
-        public static final int prompt_email=0x7f060027;
-        public static final int prompt_password=0x7f060028;
+        public static final int prompt_email=0x7f060028;
+        public static final int prompt_password=0x7f060029;
         public static final int title_activity_game_ending=0x7f060025;
         public static final int title_activity_game_start=0x7f06001e;
         public static final int title_activity_lobby=0x7f06001f;
-        public static final int title_activity_register=0x7f060026;
+        public static final int title_activity_register=0x7f060027;
         public static final int title_activity_registration=0x7f06001d;
         public static final int title_activity_townsperson=0x7f060024;
+        public static final int title_activity_voting=0x7f060026;
         public static final int title_activity_werewolf=0x7f060020;
         public static final int title_section1=0x7f060021;
         public static final int title_section2=0x7f060022;

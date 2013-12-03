@@ -13,5 +13,6 @@
     <string name="title_section3">Section 3</string>
     <string name="title_activity_townsperson">TownspersonActivity</string>
     <string name="title_activity_game_ending">GameEndingActivity</string>
+    <string name="title_activity_voting">VotingActivity</string>
 
 </resources>

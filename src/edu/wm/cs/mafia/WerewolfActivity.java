@@ -35,6 +35,9 @@ public class WerewolfActivity extends Activity {
 	String userID;
 	int num_players;
 	
+	//0 indicated that it is the first day cycle, 1 indicates it is not
+		int first_day_cycle = 0;
+	
 	//0 is day, 1 is night
 	int day_night_cycle = 0;
 	
@@ -166,6 +169,7 @@ public class WerewolfActivity extends Activity {
 		final TextView day_night_text = (TextView)findViewById(R.id.day_night_text);
 		
 		//timer checking if it is night (so kill time) every minute
+		//also send user to voting screen at advent of every morning
 		final Timer timer3 = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask(){
 			
@@ -175,6 +179,12 @@ public class WerewolfActivity extends Activity {
 					@Override
 					public void onSuccess(String response){
 						if(response.equals("night")){
+							if(day_night_cycle == 0 && first_day_cycle == 1){
+								Intent voting_intent = new Intent(cur_context, VotingActivity.class);
+								voting_intent.putExtra("userID", userID);
+								startActivity(voting_intent);
+							}
+							first_day_cycle = 1;
 							day_night_cycle = 1;
 							runOnUiThread(new Runnable() {
 							     public void run() {
