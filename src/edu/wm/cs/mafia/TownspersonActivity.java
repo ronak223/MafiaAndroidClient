@@ -27,9 +27,10 @@ public class TownspersonActivity extends Activity {
 
 	//globals
 	String userID;
-	int num_players;
+	//int num_players;
+	String cur_type = "Townsperson";
 	
-	int day_night_cycle = 0;
+	int day_night_cycle = 1;
 	
 	//0 is false, 1 is true
 	int isDeadFlag = 0;
@@ -45,7 +46,7 @@ public class TownspersonActivity extends Activity {
 		//getting current userID and number of players
 		Intent intent = getIntent();
 		userID = intent.getStringExtra("userID");
-		num_players = intent.getIntExtra("numPlayers", 0);
+		//num_players = intent.getIntExtra("numPlayers", 0);
 		
 		//init Async client for web service access
 		final AsyncHttpClient client = new AsyncHttpClient();
@@ -67,11 +68,6 @@ public class TownspersonActivity extends Activity {
 					@Override
 					public void onSuccess(String response){
 						if(response.equals("night")){
-							if(day_night_cycle == 0){
-								Intent voting_intent = new Intent(cur_ctx, VotingActivity.class);
-								voting_intent.putExtra("userID", userID);
-								startActivity(voting_intent);
-							}
 							day_night_cycle = 1;
 							runOnUiThread(new Runnable() {
 							     public void run() {
@@ -81,6 +77,12 @@ public class TownspersonActivity extends Activity {
 							});
 						}
 						else if(response.equals("day")){
+							if(day_night_cycle == 0){
+								Intent voting_intent = new Intent(cur_ctx, VotingActivity.class);
+								voting_intent.putExtra("userID", userID);
+								voting_intent.putExtra("type", cur_type);
+								startActivity(voting_intent);
+							}
 							day_night_cycle = 0;
 							runOnUiThread(new Runnable() {
 							     public void run() {
@@ -122,6 +124,7 @@ public class TownspersonActivity extends Activity {
 								    	 caution_text.setVisibility(View.GONE);
 								    }
 								});
+								day_night_timer.cancel();
 								dead_timer.cancel();
 							}
 						}

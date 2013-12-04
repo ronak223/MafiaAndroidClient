@@ -34,8 +34,8 @@
         android:id="@+id/winning_team_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/textView1"
-        android:layout_below="@+id/textView1"
+        android:layout_alignLeft="@+id/voting_screen_title"
+        android:layout_below="@+id/voting_screen_title"
         android:layout_marginTop="23dp"
         android:text="Winning team is...."
         android:textColor="#FFFFFF"
@@ -64,7 +64,7 @@
         android:textSize="28sp" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/voting_screen_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"

@@ -68,4 +68,23 @@
         android:textColor="#DEFEAA"
         android:textSize="30sp" />
 
+    <TextView
+        android:id="@+id/werewolf_dead_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/werewolf_scent_list"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="117dp"
+        android:text="YOU HAVE BEEN HANGED!"
+        android:textColor="#FF6633"
+        android:textSize="40sp" />
+
+    <TextView
+        android:id="@+id/textView100"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/werewolf_dead_text"
+        android:layout_centerHorizontal="true"
+        android:text="Please wait for game to end..." />
+
 </RelativeLayout>

@@ -32,11 +32,12 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 public class WerewolfActivity extends Activity {
 
 	//=====================================================================================
+	String cur_type = "Werewolf";
 	String userID;
-	int num_players;
+	//int num_players;
 	
 	//0 is day, 1 is night
-	int day_night_cycle = 0;
+	int day_night_cycle = 1;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class WerewolfActivity extends Activity {
 		//getting current userID and number of players
 		Intent intent = getIntent();
 		userID = intent.getStringExtra("userID");
-		num_players = intent.getIntExtra("numPlayers", 0);
+		//num_players = intent.getIntExtra("numPlayers", 0);
 		
 		//init Async client for web service access
     	final AsyncHttpClient client = new AsyncHttpClient();
@@ -176,11 +177,6 @@ public class WerewolfActivity extends Activity {
 					@Override
 					public void onSuccess(String response){
 						if(response.equals("night")){
-							if(day_night_cycle == 0){
-								Intent voting_intent = new Intent(cur_context, VotingActivity.class);
-								voting_intent.putExtra("userID", userID);
-								startActivity(voting_intent);
-							}
 							day_night_cycle = 1;
 							runOnUiThread(new Runnable() {
 							     public void run() {
@@ -189,6 +185,12 @@ public class WerewolfActivity extends Activity {
 							});
 						}
 						else if(response.equals("day")){
+							if(day_night_cycle == 0){
+								Intent voting_intent = new Intent(cur_context, VotingActivity.class);
+								voting_intent.putExtra("userID", userID);
+								voting_intent.putExtra("type", cur_type);
+								startActivity(voting_intent);
+							}
 							day_night_cycle = 0;
 							runOnUiThread(new Runnable() {
 							     public void run() {
@@ -200,6 +202,48 @@ public class WerewolfActivity extends Activity {
 				});	
 			}
 		}, 0, 60000);
+		
+		final TextView werewolf_dead_text = (TextView)findViewById(R.id.werewolf_dead_text);
+		werewolf_dead_text.setVisibility(View.GONE);
+		
+		final TextView hint_text = (TextView)findViewById(R.id.textView100);
+		hint_text.setVisibility(View.GONE);
+		
+		//timer checking if player has been killed
+		final Timer dead_timer = new Timer();
+		dead_timer.scheduleAtFixedRate(new TimerTask(){
+			
+			@Override
+			public void run(){
+				client.get("http://mafia-web-service.herokuapp.com/getPlayer/" + userID, new AsyncHttpResponseHandler() {
+					@Override
+					public void onSuccess(String response){
+						if(response.equals("false")){
+							//do nothing
+						}
+						else{
+							Map jsonData = parser.parseJson(response);
+							String isDead = (String) jsonData.get("isDead");
+							if(isDead=="true"){
+								runOnUiThread(new Runnable() {
+								     public void run() {
+								    	day_night_text.setVisibility(View.GONE);
+								    	lv2.setVisibility(View.GONE);
+								    	lv.setVisibility(View.GONE);
+								    	werewolf_dead_text.setVisibility(View.VISIBLE);
+								    	hint_text.setVisibility(View.VISIBLE);
+								    }
+								});
+								timer.cancel();
+								timer2.cancel();
+								timer3.cancel();
+								dead_timer.cancel();
+							}
+						}
+					}
+				});	
+			}
+		}, 100, 2000);
 		
 		//timer to check if game has ended (when there are no Werewolves or TP)
 		final Timer game_ending_timer = new Timer();
@@ -237,18 +281,16 @@ public class WerewolfActivity extends Activity {
 								intent.putExtra("winning_team", "Werewolves");
 							}
 							startActivity(intent);
-							game_ending_timer.cancel();
 							timer.cancel();
 							timer2.cancel();
 							timer3.cancel();
+							dead_timer.cancel();
+							game_ending_timer.cancel();
 						}
 					}
 				});	
 			}
 		}, 400, 2000);
-		//==========================================================================================================
-		
-        
 		
 	}
 

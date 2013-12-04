@@ -210,15 +210,15 @@ containing a value of this type.
     public static final class id {
         public static final int TextView3=0x7f050009;
         public static final int TextView4=0x7f05000e;
-        public static final int action_forgot_password=0x7f05002a;
-        public static final int action_settings=0x7f050029;
+        public static final int action_forgot_password=0x7f05002f;
+        public static final int action_settings=0x7f05002e;
         public static final int alive_player_summary_list=0x7f05000d;
         public static final int complete_game_button=0x7f05000f;
         public static final int confirm_registration_button=0x7f050022;
         public static final int create_or_join_game_button=0x7f050013;
         public static final int day_night_freq_picker=0x7f050014;
         public static final int day_night_freq_text=0x7f050015;
-        public static final int day_night_text=0x7f050028;
+        public static final int day_night_text=0x7f05002b;
         public static final int game_availability_text=0x7f050012;
         public static final int game_over_text=0x7f050005;
         public static final int game_selection_text=0x7f050011;
@@ -241,15 +241,20 @@ containing a value of this type.
         public static final int relative_layout_game_selection=0x7f050010;
         public static final int satellite=0x7f050002;
         public static final int terrain=0x7f050003;
-        public static final int textView1=0x7f050008;
+        public static final int textView100=0x7f05002d;
+        public static final int textView1_voting=0x7f050027;
         public static final int textView2=0x7f05000c;
         public static final int total_kills_text=0x7f05000b;
         public static final int tp_caution_text=0x7f050024;
         public static final int tp_day_night_text=0x7f050023;
         public static final int tp_dead_text=0x7f050025;
         public static final int userid_input=0x7f05001b;
-        public static final int werewolf_kill_list=0x7f050027;
-        public static final int werewolf_scent_list=0x7f050026;
+        public static final int voting_activity_title=0x7f050026;
+        public static final int voting_list=0x7f050028;
+        public static final int voting_screen_title=0x7f050008;
+        public static final int werewolf_dead_text=0x7f05002c;
+        public static final int werewolf_kill_list=0x7f05002a;
+        public static final int werewolf_scent_list=0x7f050029;
         public static final int winning_team_text=0x7f050007;
     }
     public static final class integer {
